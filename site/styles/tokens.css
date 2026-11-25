@@ -1,0 +1,100 @@
+/* Design tokens. Source: Figma file "Advent Calendar" (main screen 7:2, Day 6:16,
+   hint 10:30, practice modal 13:94) and SKILL.md (gentle-december-style).
+   Figma has no variables; these are the raw values from its layers. */
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg-page: #fbf7f0;
+  --bg-band: #f4ecdf;            /* info band, format switch track, timer panel */
+  --surface: #fffdf9;            /* open/today tiles, modal sheet */
+  --surface-white: #ffffff;      /* tooltip, buttons, close button, inputs */
+  --surface-done: #fdf0c8;       /* completion message, small-action card (prototype) */
+
+  /* Text */
+  --text-strong: #1e2a4a;        /* navy: headings, numbers, body in modal */
+  --text-muted: #5d6680;         /* slate: explanatory text */
+  --text-on-dark: #ffffff;
+
+  /* Lines */
+  --line: #e8dcc6;               /* dividers, meter track, close button border */
+  --line-tooltip: #dfdfe0;
+  --line-button: #d9ccb3;        /* outline buttons, inputs */
+  --line-example: #c3b288;       /* example block border */
+
+  /* Gold: progress and "lit" only */
+  --gold-1: #fbe39a;
+  --gold-2: #f2d27a;
+  --gold-3: #e9b949;
+  --gold-border: #d8a830;        /* lit tile, gold button */
+  --gold-strong: #d2a32a;        /* open tile border, meter start, modal top border, reflection rule */
+  --gold-ink: #5a3c06;           /* text on gold */
+  --gold-gradient: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 55%, var(--gold-3) 100%);
+  --meter-gradient: linear-gradient(90deg, var(--gold-strong), var(--gold-2));
+
+  /* Locked */
+  --locked-line: #cdbf9f;
+  --locked-ink: #a99c80;
+
+  /* Red: "today" and the door only */
+  --red: #d7262e;
+  --red-on-gold: #991b21;        /* "двері" on the lit day-25 tile; Figma #d7262e is 2.7:1 there, this is 4.5:1 */
+  --door-locked-line: #d9a7a3;
+
+  /* Modal extras */
+  --switch-active: #82755f;      /* active format option; Figma #ae9c7f gives white text 2.7:1, this is 4.5:1 */
+  --ring-track: #eadfc9;
+  --ring-arc: #c3b288;
+  --overlay: rgba(30, 42, 74, 0.55);
+  --shadow-sheet: 0 20px 60px rgba(30, 42, 74, 0.3);
+
+  /* Buttons (Figma "Button" 28:76). Primary = gold, only for lighting a day;
+     Secondary = white pill for every other action. */
+  --btn-primary-bg: var(--gold-gradient);
+  --btn-primary-border: var(--gold-border);
+  --btn-primary-bg-hover: linear-gradient(180deg, #f8dc86 0%, #efc966 55%, #e2ae3a 100%);
+  --btn-primary-border-hover: var(--gold-strong);
+  --btn-primary-bg-pressed: linear-gradient(180deg, var(--gold-2) 0%, var(--gold-3) 55%, var(--gold-border) 100%);
+  --btn-primary-border-pressed: #c4952a;
+  --btn-primary-bg-disabled: var(--line);
+  --btn-primary-border-disabled: var(--line);
+  --btn-secondary-bg: var(--surface-white);
+  --btn-secondary-border: var(--line-button);
+  --btn-secondary-bg-hover: var(--bg-band);
+  --btn-secondary-border-hover: var(--locked-line);
+  --btn-secondary-bg-pressed: var(--line);
+  --btn-secondary-border-pressed: var(--locked-line);
+  --btn-secondary-bg-disabled: var(--surface);
+  --btn-secondary-border-disabled: var(--line);
+  --btn-text-disabled: var(--locked-ink);
+  --btn-focus-gap: var(--bg-page);       /* 2px cream gap … */
+  --btn-focus-ring: var(--text-strong);  /* … then a 2px navy ring */
+
+  /* Type */
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-display: "Montserrat", "Manrope", system-ui, sans-serif; /* modal title only, 800 italic */
+  --lh-body: 1.55;
+
+  /* Radii */
+  --radius-tile: 12px;
+  --radius-tooltip: 12px;
+  --radius-panel: 14px;          /* timer, completion message */
+  --radius-sheet: 18px;
+  --radius-illustration: 8px;
+  --radius-pill: 999px;
+
+  /* Borders */
+  --border-tile: 1.5px;
+  --border-today: 3px;
+
+  /* Layout (desktop 1440 frame) */
+  --content-max: 1200px;
+  --gutter: max(5vw, 16px);      /* 120px at 1440 is ~8.3vw; capped by --content-max */
+  --panel-width: 487px;
+  --main-gap: 56px;
+  --tile-gap: 8px;
+
+  /* Focus */
+  --focus-ring: 3px solid var(--text-strong);
+  --focus-offset: 2px;
+}

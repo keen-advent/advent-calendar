@@ -1,0 +1,18 @@
+/* Toast (prototype state; flat, navy on cream). */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 20;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: calc(100% - 32px);
+  padding: 12px 18px;
+  border-radius: var(--radius-tile);
+  background: var(--text-strong);
+  color: var(--text-on-dark);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}

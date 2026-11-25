@@ -1,0 +1,120 @@
+/* Day-25 support kit card. Prototype content, Figma tokens.
+   The 568px modal is too narrow for a 4-column table with inputs, so each row is laid
+   out as the situation on top and its three labelled fields side by side; below 420px
+   (container width, i.e. phones) the fields stack. The markup stays a real table so
+   screen readers keep the row/column relationships. */
+
+.sheet__kit {
+  container-type: inline-size;
+}
+
+.kit {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kit__table,
+.kit__table tbody {
+  display: block;
+}
+
+.kit__table thead {
+  display: none;
+}
+
+.kit__table tr {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px 10px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.kit__table tr:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.kit__table th,
+.kit__table td {
+  padding: 0;
+  border: 0;
+}
+
+.kit__table th[scope="row"] {
+  grid-column: 1 / -1;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-strong);
+}
+
+.kit__table td {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.kit__table td::before {
+  content: attr(data-label);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+.kit__fallback {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.kit__input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--line-button);
+  border-radius: 8px;
+  background: var(--surface-white);
+  color: var(--text-strong);
+  font: 16px / 1.3 var(--font-sans); /* 16px keeps iOS from zooming in on focus */
+}
+
+.kit__input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 1px;
+  border-color: var(--text-strong);
+}
+
+.kit__extra {
+  display: grid;
+  gap: 8px;
+}
+
+.kit__label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.kit__label:not(:first-child) {
+  margin-top: 6px;
+}
+
+.kit__note {
+  font-size: 13px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.kit__copy {
+  width: fit-content;
+}
+
+@container (max-width: 420px) {
+  .kit__table tr {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}

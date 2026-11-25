@@ -1,0 +1,19 @@
+# Only the site, its tests and tooling are published. Everything else in this folder
+# is reference or internal material and stays local.
+
+# Design and reference material
+/Advent calendar.pdf
+/Різдвяна листівка.png
+/Для Figma/
+/Gentle December — сайт/
+/SKILL.md
+/Gentle December — документація.md
+/mr-concept-glow-instruction.md
+/docs/
+
+# Local tool settings
+/.claude/
+
+# OS / editor noise
+.DS_Store
+node_modules/

@@ -1,0 +1,323 @@
+/* Practice modal (Figma 13:94): 640px sheet, 36px padding (the 6px gold top border
+   puts the header 42px from the top edge), 18px radius, 16px between all sections,
+   8px between the timer panel and its tip. */
+
+html.has-modal {
+  overflow: hidden;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(12px, 5vh, 48px) 16px;
+  border: 0;
+  background: transparent;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modal::backdrop {
+  background: var(--overlay);
+}
+
+.sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(20px, 5vw, 36px);
+  border-top: 6px solid var(--gold-strong);
+  border-radius: var(--radius-sheet);
+  background: var(--surface);
+  box-shadow: var(--shadow-sheet);
+  color: var(--text-strong);
+}
+
+/* Header: meta + title, close button on the right. */
+.sheet__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.sheet__heading {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sheet__meta {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--text-muted);
+}
+
+.sheet__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(24px, 6vw, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.sheet__close {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-white);
+  color: var(--text-strong);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sheet__idea {
+  font-size: 16px;
+  line-height: var(--lh-body);
+}
+
+/* Format switch. */
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-band);
+}
+
+.switch__option {
+  min-height: 43px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-strong);
+  font: 700 14px / normal var(--font-sans);
+  cursor: pointer;
+}
+
+.switch__option[aria-pressed="true"] {
+  background: var(--switch-active);
+  color: var(--text-on-dark);
+}
+
+/* Full exercise. */
+.sheet__full {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Timer panel with the silent-timer tip directly under it (Figma 25:208). */
+.sheet__timer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 10px;
+  font-size: 16px;
+  line-height: var(--lh-body);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step) ".";
+  font-weight: 700;
+  line-height: normal;
+  padding-top: 1px;
+}
+
+.block-label {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--text-muted);
+}
+
+.example {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--line-example);
+  border-radius: var(--radius-tile);
+}
+
+.example__text {
+  font-size: 16px;
+  line-height: var(--lh-body);
+}
+
+.reflection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 12px;
+  border-left: 3px solid var(--gold-strong);
+}
+
+.reflection__text {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: var(--lh-body);
+}
+
+/* Small action (prototype state, restyled with the band surface). */
+.sheet__small {
+  padding: 16px;
+  border-radius: var(--radius-panel);
+  background: var(--bg-band);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* "Навіщо це" (collapsed by default). */
+.why {
+  padding: 10px 0 6px;
+  border-top: 1px solid var(--line);
+}
+
+.why__summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-block: -11px; /* 22px line in Figma, 44px touch target */
+  width: fit-content;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  list-style: none;
+}
+
+.why__summary::-webkit-details-marker {
+  display: none;
+}
+
+.why__summary::before {
+  content: "▸";
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.why[open] > .why__summary::before {
+  transform: rotate(90deg);
+}
+
+.why__text {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+/* Timer. */
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 16px;
+  border-radius: var(--radius-panel);
+  background: var(--bg-band);
+}
+
+.timer__ring {
+  flex: none;
+  width: 48px;
+  height: 48px;
+}
+
+.timer__ring circle {
+  fill: none;
+  stroke-width: 6.72;
+}
+
+.timer__track {
+  stroke: var(--ring-track);
+}
+
+.timer__arc {
+  stroke: var(--ring-arc);
+  stroke-linecap: round;
+}
+
+.timer__controls {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+
+.timer__time {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: normal;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.timer__buttons,
+.sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Completion / already lit message (prototype state). */
+.done-message {
+  padding: 14px 16px;
+  border-radius: var(--radius-panel);
+  background: var(--surface-done);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: var(--lh-body);
+}
+
+.sheet__tip {
+  font-size: 13px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why__summary::before {
+    transition: none;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "advent-calendar",
+  "private": true,
+  "type": "module",
+  "description": "Static advent calendar of small pauses. The deployable site is the site/ folder; no build step, no dependencies.",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test \"tests/*.test.js\""
+  }
+}

@@ -1,0 +1,216 @@
+/* Page layout: hero, main row, info band (Figma 7:2 at 1440).
+   Desktop values: 56px vertical padding, 1200px content, 16px intro→main gap,
+   house column + 56px gap + 487px days panel, bottom-aligned.
+   Below 900px (prototype breakpoint) the house stacks above the panel. */
+
+.hero {
+  padding: clamp(24px, 3.9vw, 56px) var(--gutter);
+}
+
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 922px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero__title {
+  font-weight: 700;
+  font-size: clamp(34px, 4.03vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.hero__subtitle {
+  font-size: 20px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.hero__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, var(--panel-width));
+  gap: clamp(20px, 3.9vw, var(--main-gap));
+  align-items: end;
+  max-width: var(--content-max);
+  margin: 16px auto 0;
+}
+
+.house-slot {
+  display: flex;
+  justify-content: center;
+}
+
+/* Info band */
+.info-band {
+  background: var(--bg-band);
+  padding: clamp(28px, 3.9vw, 56px) var(--gutter);
+}
+
+.info-band > * {
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+.info-band__notes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.8vw, 40px);
+}
+
+.note__title {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--text-strong);
+}
+
+.note__body {
+  margin-top: 6px;
+  font-size: 16px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+/* Divider + methods (Figma: 28px above and below the divider, then 28px to the footer). */
+.methods {
+  margin-top: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 28px; /* the summary's -11px margin cancels its touch padding */
+}
+
+.methods__summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-block: -11px; /* 22px line in Figma, 44px touch target */
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-strong);
+  cursor: pointer;
+  list-style: none;
+  width: fit-content;
+}
+
+.methods__summary::-webkit-details-marker {
+  display: none;
+}
+
+.methods__summary::before {
+  content: "▸";
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+.methods[open] > .methods__summary::before {
+  transform: rotate(90deg);
+}
+
+.methods__table {
+  margin-top: 24px;
+}
+
+.info-band__footer {
+  margin-top: 28px;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+/* Shared data table (methods, support kit). */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: var(--lh-body);
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.data-table th {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.methods__table td:first-child {
+  width: 26%;
+  font-weight: 700;
+}
+
+.methods__table td:last-child {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .hero__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked: keep the panel at its Figma width so tiles never exceed 91×76. */
+  .days-panel {
+    width: 100%;
+    max-width: var(--panel-width);
+    justify-self: center;
+  }
+
+  .info-band__notes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero__subtitle {
+    font-size: 17px;
+  }
+
+  .data-table {
+    font-size: 14px;
+  }
+
+  /* Stacked table rows: each cell shows its column name above the value. */
+  .data-table--stack thead {
+    display: none;
+  }
+
+  .data-table--stack tr {
+    display: grid;
+    padding-block: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .data-table--stack td {
+    display: block;
+    border: 0;
+    padding: 3px 0;
+    width: auto !important;
+    white-space: normal !important;
+  }
+
+  .data-table--stack td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .methods__summary::before {
+    transition: none;
+  }
+}

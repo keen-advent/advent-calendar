@@ -1,0 +1,97 @@
+/* Pill button (Figma "Button" 28:76, states and usage rule 28:77).
+   One shared style with two variants:
+     .btn--primary   gold; only for the action that lights a day ("Завершити вправу")
+     .btn--secondary white with beige border; every other pill button
+   States: hover (pointer devices only), pressed (:active), focus (:focus-visible),
+   disabled (:disabled or aria-disabled). No movement, scaling or elevation. */
+
+.btn {
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  font: 700 15px / normal var(--font-sans);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn--primary {
+  border: 1px solid var(--btn-primary-border);
+  background: var(--btn-primary-bg);
+  color: var(--gold-ink);
+}
+
+.btn--secondary {
+  border: 1.5px solid var(--btn-secondary-border);
+  background: var(--btn-secondary-bg);
+  color: var(--text-strong);
+}
+
+/* Hover: only where a real pointer can hover, so it never sticks after a tap. */
+@media (hover: hover) {
+  .btn--primary:hover:not(:disabled, [aria-disabled="true"]) {
+    border-color: var(--btn-primary-border-hover);
+    background: var(--btn-primary-bg-hover);
+  }
+
+  .btn--secondary:hover:not(:disabled, [aria-disabled="true"]) {
+    border-color: var(--btn-secondary-border-hover);
+    background: var(--btn-secondary-bg-hover);
+  }
+}
+
+/* Pressed. Declared after hover so it wins while the pointer is down. */
+.btn--primary:active:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--btn-primary-border-pressed);
+  background: var(--btn-primary-bg-pressed);
+}
+
+.btn--secondary:active:not(:disabled, [aria-disabled="true"]) {
+  border-color: var(--btn-secondary-border-pressed);
+  background: var(--btn-secondary-bg-pressed);
+}
+
+/* Focus (keyboard only): 2px cream gap + 2px navy ring. The gap is a solid ring drawn
+   with box-shadow (not elevation); the navy ring is an outline, which browsers keep and
+   recolor in forced-colors mode, so focus stays visible there. */
+.btn:focus-visible {
+  outline: 2px solid var(--btn-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--btn-focus-gap);
+}
+
+/* Disabled: muted colors, no pointer, no hover/pressed (excluded above). */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  color: var(--btn-text-disabled);
+  cursor: default;
+}
+
+.btn--primary:disabled,
+.btn--primary[aria-disabled="true"] {
+  border-color: var(--btn-primary-border-disabled);
+  background: var(--btn-primary-bg-disabled);
+}
+
+.btn--secondary:disabled,
+.btn--secondary[aria-disabled="true"] {
+  border-color: var(--btn-secondary-border-disabled);
+  background: var(--btn-secondary-bg-disabled);
+}
+
+@media (forced-colors: active) {
+  .btn:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}

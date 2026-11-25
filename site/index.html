@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advent Calendar</title>
+  <meta name="description" content="Календар маленьких пауз на грудень: 25 коротких вправ із перевірених психологічних підходів.">
+  <meta name="theme-color" content="#fbf7f0">
+  <!-- No tab icon yet (logo placement is undecided); an empty icon stops the /favicon.ico 404. -->
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/fonts.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/house.css">
+  <link rel="stylesheet" href="styles/days-panel.css">
+  <link rel="stylesheet" href="styles/button.css">
+  <link rel="stylesheet" href="styles/modal.css">
+  <link rel="stylesheet" href="styles/kit.css">
+  <link rel="stylesheet" href="styles/toast.css">
+  <link rel="preload" href="assets/img/building-dark.webp" as="image">
+  <link rel="preload" href="assets/img/building-glow.webp" as="image">
+</head>
+<body>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero__intro">
+        <h1 class="hero__title" id="page-title">Advent Calendar</h1>
+        <p class="hero__subtitle">Календар маленьких пауз на грудень: 25 коротких вправ із перевірених психологічних підходів. З кожною вправою в нашому домі світлішає. Світло починається з нашого першого поверху. Щодня в домі й довкола загоряється ще один вогник.</p>
+      </div>
+
+      <div class="hero__main">
+        <div class="house-slot" id="house-slot"></div>
+
+        <div class="days-panel">
+          <h2 class="visually-hidden">Дні календаря</h2>
+          <div class="progress" id="progress-slot"></div>
+          <p class="days-panel__hint">Немає 10–15 хвилин? У кожному дні є маленька дія на 1–2 хвилини.</p>
+          <div id="days-slot"></div>
+          <div class="days-panel__tools" id="tools-slot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-band" aria-label="Як це працює">
+      <div class="info-band__notes">
+        <div class="note">
+          <h2 class="note__title">Пропуски — це нормально</h2>
+          <p class="note__body">Дні, що вже настали, лишаються відкритими. Вправи можна пропускати, скорочувати й зупиняти, якщо стає гірше. Ніяких серій і надолужування.</p>
+        </div>
+        <div class="note">
+          <h2 class="note__title">Повна вправа або одна хвилина</h2>
+          <p class="note__body">Кожен день — вправа на 10–15 хвилин і маленька дія на 1–2. Обирай те, на що зараз є сили. Усе без звуку.</p>
+        </div>
+        <div class="note">
+          <h2 class="note__title">Тільки для тебе</h2>
+          <p class="note__body">Відмітки і твої записи зберігаються лише в цьому браузері. Компанія не бачить, хто, що і коли відкривав.</p>
+        </div>
+      </div>
+
+      <div id="methods-slot"></div>
+
+      <footer class="info-band__footer">
+        <p>Календар — не терапія і не замінює фахівця. Якщо труднощі стійко заважають сну, повсякденним справам або турботі про себе, звернися по професійну допомогу; за різкого погіршення не чекай завершення календаря. Можна почати з mental health officer компанії.</p>
+        <p>Коли сторінка вже відкрита, вправи працюють і без інтернету.</p>
+      </footer>
+    </section>
+  </main>
+
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

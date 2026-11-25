@@ -1,0 +1,174 @@
+/* Days panel (Figma 7:10): progress → 10 → meter 8px → 8 → hint → 16 → grid → 32 →
+   reset link, 24px bottom padding. Tiles 91×76 with 8px gaps fill exactly 487px. */
+
+.days-panel {
+  padding-bottom: 24px;
+}
+
+.progress__label {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--text-strong);
+}
+
+.progress__meter {
+  height: 8px;
+  margin-top: 10px;
+  border-radius: 99px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: var(--meter-gradient);
+  transition: width 0.8s ease;
+}
+
+.days-panel__hint {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+}
+
+.days {
+  position: relative;
+  margin-top: 16px;
+}
+
+.days__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--tile-gap);
+}
+
+/* Day tile (Figma 6:16). Border style tells the state, not only color. */
+.day-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 91 / 76;
+  min-height: 44px;
+  padding: 0;
+  border-radius: var(--radius-tile);
+  border: var(--border-tile) solid var(--gold-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  font: 800 20px / normal var(--font-sans);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.day-tile--lit {
+  background: var(--gold-gradient);
+  border-color: var(--gold-border);
+  color: var(--gold-ink);
+}
+
+.day-tile--locked {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--locked-line);
+  color: var(--locked-ink);
+  cursor: default;
+}
+
+.day-tile.is-today {
+  border: var(--border-today) solid var(--red);
+}
+
+.day-tile__label {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--red);
+}
+
+.day-tile--door.day-tile--locked {
+  border-color: var(--door-locked-line);
+}
+
+.day-tile--door.day-tile--locked .day-tile__label {
+  opacity: 0.55;
+}
+
+.day-tile--door.day-tile--lit:not(.is-today) {
+  border-color: var(--red);
+}
+
+/* Darker red label on gold for readable contrast (the border keeps the Figma red). */
+.day-tile--door.day-tile--lit .day-tile__label {
+  color: var(--red-on-gold);
+}
+
+/* Hint tooltip (Figma 10:30, 14px as on the main screen). */
+.day-hint {
+  position: absolute;
+  z-index: 5;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 12px;
+  border: 1px solid var(--line-tooltip);
+  border-radius: var(--radius-tooltip);
+  background: var(--surface-white);
+  font-size: 14px;
+  line-height: var(--lh-body);
+  color: var(--text-muted);
+  text-align: center;
+  pointer-events: none;
+}
+
+.day-hint strong {
+  font-weight: 800;
+  color: var(--text-strong);
+}
+
+/* Tools: 32px below the grid. */
+.days-panel__tools {
+  margin-top: 32px;
+}
+
+/* Text link (Figma: Bold 14, slate, underlined). 44px touch target, 19px visual line. */
+.text-link {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -12.5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: 700 14px / normal var(--font-sans);
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.text-link:hover,
+.reset-link.is-confirming {
+  color: var(--text-strong);
+}
+
+@media (max-width: 600px) {
+  .days__grid {
+    gap: 6px;
+  }
+
+  .day-tile {
+    border-radius: 10px;
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__fill {
+    transition: none;
+  }
+}

@@ -1,0 +1,110 @@
+/* HouseIllustration. Geometry matches the prototype exactly: 7% top padding for the
+   star and smoke, a 1400:1177 stage, and the drift pulled up by 5.5% of the width.
+   At 657px wide (Figma 7:8) this adds up to the Figma box height of 621px. */
+
+.house-figure {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  padding-top: 7%;
+}
+
+.house-figure__stage {
+  position: relative;
+  aspect-ratio: 1400 / 1177;
+}
+
+/* Faint grey sketch under the house while the watercolor paint-in runs. */
+.house-figure__sketch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(1) contrast(1.6) brightness(1.15);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+
+.house-figure__sketch.is-on {
+  opacity: 0.32;
+}
+
+.house {
+  position: absolute;
+  inset: 0;
+}
+
+.house.is-painting {
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.house__base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Lit-window crops: a box over the base image showing the glow image. */
+.house__window {
+  position: absolute;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.house__window img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.house__overlays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.house__overlays .dg {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.house__window.is-lit,
+.house__overlays .dg.is-lit {
+  opacity: 1;
+}
+
+.house__snow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Figma rounds the illustration box by 8px; only the drift's bottom corners show it. */
+.house-figure__drift {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin-top: -5.5%;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius-illustration) var(--radius-illustration);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .house-figure__sketch,
+  .house__window,
+  .house__overlays .dg {
+    transition: none;
+  }
+}
