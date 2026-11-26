@@ -91,6 +91,7 @@
   --content-max: 1200px;
   --gutter: max(5vw, 16px);      /* 120px at 1440 is ~8.3vw; capped by --content-max */
   --panel-width: 487px;
+  --sheet-width: 740px;          /* practice modal (Figma 13:94): 668px content + 2 × 36px padding */
   --main-gap: 56px;
   --tile-gap: 8px;
 

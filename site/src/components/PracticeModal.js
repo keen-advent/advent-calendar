@@ -41,7 +41,11 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     '<div class="sheet__full">' +
     '<ol class="steps"></ol>' +
     '<div class="sheet__kit" hidden></div>' +
-    `<div class="example"><p class="block-label">${esc(M.example)}</p><p class="example__text"></p></div>` +
+    // Same portrait on every day: it belongs to the Example block layout, not to the day's data.
+    '<div class="example">' +
+    `<img class="example__photo" src="assets/img/mho-portrait.webp" alt="${esc(M.mhoPortraitAlt)}" width="80" height="80" decoding="async">` +
+    `<div class="example__body"><p class="block-label">${esc(M.example)}</p><p class="example__text"></p></div>` +
+    "</div>" +
     "</div>" +
     '<p class="sheet__small" hidden></p>' +
     '<div class="sheet__timer-group">' +

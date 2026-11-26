@@ -41,6 +41,7 @@ export const COPY = {
     formatFull: (m) => `Вправа · ${m} хв`,
     formatSmall: (m) => `Маленька дія · ${m} хв`,
     example: "Приклад",
+    mhoPortraitAlt: "mental health officer компанії",
     reflection: "Рефлексія",
     why: "Навіщо це",
     complete: "Завершити вправу", // Figma

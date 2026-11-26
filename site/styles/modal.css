@@ -30,7 +30,7 @@ html.has-modal {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 640px;
+  max-width: var(--sheet-width);
   margin: 0 auto;
   padding: clamp(20px, 5vw, 36px);
   border-top: 6px solid var(--gold-strong);
@@ -168,30 +168,51 @@ html.has-modal {
   color: var(--text-muted);
 }
 
+/* "Приклад" (Figma 13:120): portrait of the company's mental health officer beside the
+   text. The photo is 80px in the layout; its 1px ring sits outside it (82px box pulled
+   back by a -1px margin), as in Figma 42:241. */
 .example {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 14px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
   border: 1px solid var(--line-example);
   border-radius: var(--radius-tile);
 }
 
+.example__photo {
+  flex: none;
+  box-sizing: border-box;
+  width: 82px;
+  height: 82px;
+  margin: -1px;
+  border: 1px solid var(--bg-band);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.example__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .example__text {
-  font-size: 16px;
+  font-size: 14px;
   line-height: var(--lh-body);
 }
 
 .reflection {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding-left: 12px;
+  gap: 4px;
+  padding: 2px 0 2px 12px;
   border-left: 3px solid var(--gold-strong);
 }
 
 .reflection__text {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: var(--lh-body);
 }
@@ -314,6 +335,14 @@ html.has-modal {
   font-size: 13px;
   line-height: var(--lh-body);
   color: var(--text-muted);
+}
+
+/* Narrow screens (site breakpoint): smaller portrait so the text keeps its width. */
+@media (max-width: 600px) {
+  .example__photo {
+    width: 58px;
+    height: 58px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
