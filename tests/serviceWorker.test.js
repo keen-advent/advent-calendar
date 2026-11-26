@@ -10,7 +10,8 @@ import vm from "node:vm";
 const site = fileURLToPath(new URL("../site/", import.meta.url));
 
 function filesIn(dir) {
-  return readdirSync(dir).flatMap((name) => {
+  // Hidden files (.DS_Store etc.) are OS noise, git-ignored and never deployed.
+  return readdirSync(dir).filter((name) => !name.startsWith(".")).flatMap((name) => {
     const p = join(dir, name);
     return statSync(p).isDirectory() ? filesIn(p) : [relative(site, p).split(sep).join("/")];
   });

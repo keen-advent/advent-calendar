@@ -40,7 +40,7 @@ export const COPY = {
     formatGroup: "Формат",
     formatFull: (m) => `Вправа · ${m} хв`,
     formatSmall: (m) => `Маленька дія · ${m} хв`,
-    example: "Приклад",
+    example: "Приклад від офіцера з ментального здоров’я",
     mhoPortraitAlt: "mental health officer компанії",
     reflection: "Рефлексія",
     why: "Навіщо це",
