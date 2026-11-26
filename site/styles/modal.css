@@ -138,7 +138,7 @@ html.has-modal {
 .steps {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px; /* Figma 13:107 */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -228,8 +228,10 @@ html.has-modal {
 }
 
 /* "Навіщо це" (collapsed by default). */
+/* Figma 13:137: 1px divider, then 8px above the 22px label line, nothing below.
+   The summary keeps its 44px tap area via min-height + negative margins (below). */
 .why {
-  padding: 10px 0 6px;
+  padding: 8px 0 0;
   border-top: 1px solid var(--line);
 }
 
