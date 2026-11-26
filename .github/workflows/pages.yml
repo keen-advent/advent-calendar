@@ -1,5 +1,9 @@
 # Deploys the static site (the site/ folder, no build step) to GitHub Pages
 # on every push to main. Tests run first; a failing test stops the deploy.
+#
+# The Pages artifact is uploaded in one job and deployed in the next (GitHub's own
+# multi-job Pages layout). Uploading and deploying in the same job a few seconds
+# apart occasionally failed with "No artifacts named github-pages were found".
 name: Deploy to GitHub Pages
 
 on:
@@ -27,17 +31,22 @@ jobs:
           node-version: 22
       - run: npm test
 
-  deploy:
+  package:
     needs: test
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
