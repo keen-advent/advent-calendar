@@ -87,5 +87,13 @@ export function createDaysGrid(slot, { onSelect }) {
     focusDay(day, options) {
       tiles[day - 1]?.focus(options);
     },
+
+    /** Soft gold fade on a tile that has just been lit (CSS animation, see days-panel.css). */
+    markJustLit(/** @type {number} */ day) {
+      const tile = tiles[day - 1];
+      if (!tile) return;
+      tile.classList.add("is-just-lit");
+      tile.addEventListener("animationend", () => tile.classList.remove("is-just-lit"), { once: true });
+    },
   };
 }

@@ -6,7 +6,7 @@
 // When files are added or removed, update PRECACHE (tests/serviceWorker.test.js
 // checks it lists every file in site/) and bump VERSION to drop the old cache.
 
-const VERSION = "v10";
+const VERSION = "v12";
 const CACHE = `advent-calendar-${VERSION}`;
 
 const PRECACHE = [
@@ -34,6 +34,7 @@ const PRECACHE = [
   "src/lib/focusTrap.js",
   "src/lib/kitText.js",
   "src/lib/motion.js",
+  "src/lib/sequence.js",
   "src/lib/storage.js",
   "src/components/DayHint.js",
   "src/components/DayTile.js",

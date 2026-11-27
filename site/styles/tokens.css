@@ -67,8 +67,8 @@
   --btn-secondary-bg-disabled: var(--surface);
   --btn-secondary-border-disabled: var(--line);
   --btn-text-disabled: var(--locked-ink);
-  --btn-focus-gap: var(--bg-page);       /* 2px cream gap … */
-  --btn-focus-ring: var(--text-strong);  /* … then a 2px navy ring */
+  --btn-focus-gap: var(--focus-gap);
+  --btn-focus-ring: var(--focus-color);
 
   /* Text field (Figma "Input / Text field" 56:122). Focus uses navy, as the component
      description and the rest of the app's focus rings do. */
@@ -110,4 +110,11 @@
   /* Focus */
   --focus-ring: 3px solid var(--text-strong);
   --focus-offset: 2px;
+  /* Shared control focus (buttons, day tiles, close button, format switch, "Навіщо це"):
+     2px cream gap + 2px navy ring; see .focus-ring rule in base.css. */
+  --focus-color: var(--text-strong);
+  --focus-gap: var(--bg-page);
+
+  /* Motion */
+  --lift: translateY(-2px);      /* day tile hover */
 }

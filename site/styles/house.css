@@ -54,7 +54,7 @@
   position: absolute;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 1.4s ease;
+  transition: opacity 1.2s ease;
 }
 
 .house__window img {
@@ -75,7 +75,7 @@
 
 .house__overlays .dg {
   opacity: 0;
-  transition: opacity 1.4s ease;
+  transition: opacity 1.2s ease;
 }
 
 .house__window.is-lit,

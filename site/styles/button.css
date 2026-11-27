@@ -60,14 +60,7 @@
   background: var(--btn-secondary-bg-pressed);
 }
 
-/* Focus (keyboard only): 2px cream gap + 2px navy ring. The gap is a solid ring drawn
-   with box-shadow (not elevation); the navy ring is an outline, which browsers keep and
-   recolor in forced-colors mode, so focus stays visible there. */
-.btn:focus-visible {
-  outline: 2px solid var(--btn-focus-ring);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px var(--btn-focus-gap);
-}
+/* Focus (keyboard only): the shared control ring in base.css. */
 
 /* Disabled: muted colors, no pointer, no hover/pressed (excluded above). */
 .btn:disabled,
@@ -89,10 +82,6 @@
 }
 
 @media (forced-colors: active) {
-  .btn:focus-visible {
-    outline-color: Highlight;
-  }
-
   .btn:disabled,
   .btn[aria-disabled="true"] {
     color: GrayText;

@@ -47,6 +47,28 @@ button {
   outline-offset: var(--focus-offset);
 }
 
+/* Shared control focus ring (Figma Button 28:76 "Focus"): 2px cream gap drawn with
+   box-shadow, then a 2px navy outline. The outline is what forced-colors mode keeps. */
+.btn:focus-visible,
+.day-tile:focus-visible,
+.sheet__close:focus-visible,
+.switch__option:focus-visible,
+.why__summary:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--focus-gap);
+}
+
+@media (forced-colors: active) {
+  .btn:focus-visible,
+  .day-tile:focus-visible,
+  .sheet__close:focus-visible,
+  .switch__option:focus-visible,
+  .why__summary:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

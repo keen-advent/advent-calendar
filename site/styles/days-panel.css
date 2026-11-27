@@ -59,9 +59,44 @@
   border: var(--border-tile) solid var(--gold-strong);
   background: var(--surface);
   color: var(--text-strong);
+  position: relative;
   font: 800 20px / normal var(--font-sans);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+/* Hover: open, today and lit tiles lift 2px (pointer devices, motion allowed only);
+   pressed puts them back. Locked tiles never move. No shadow, no color change. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .day-tile:not(.day-tile--locked):hover {
+    transform: var(--lift);
+  }
+}
+
+.day-tile:not(.day-tile--locked):active {
+  transform: none;
+}
+
+.day-tile > span {
+  position: relative; /* above the just-lit fade layer */
+}
+
+/* Just lit (lighting moment): a cream layer over the new gold fades out in 350 ms. */
+.day-tile.is-just-lit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--surface);
+  pointer-events: none;
+  animation: tile-light 0.35s ease forwards;
+}
+
+@keyframes tile-light {
+  to {
+    opacity: 0;
+  }
 }
 
 .day-tile--lit {
@@ -151,8 +186,10 @@
   cursor: pointer;
 }
 
-.text-link:hover {
-  color: var(--text-strong);
+@media (hover: hover) {
+  .text-link:hover {
+    color: var(--text-strong);
+  }
 }
 
 /* Reset confirmation (Figma 81:878): question, 20px, two small buttons 10px apart.
@@ -189,7 +226,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .progress__fill {
+  .progress__fill,
+  .day-tile {
     transition: none;
+  }
+
+  .day-tile.is-just-lit::after {
+    animation: none;
+    opacity: 0;
   }
 }

@@ -9,9 +9,12 @@ import { COPY } from "../data/copy.js";
 import { DAYS } from "../lib/calendar.js";
 import { esc } from "../lib/dom.js";
 import { trapFocus } from "../lib/focusTrap.js";
+import { prefersReducedMotion } from "../lib/motion.js";
 import { createTimer } from "./Timer.js";
 
 const M = COPY.modal;
+const FADE_OUT = 150; // ms, matches .modal.is-closing in modal.css
+const EXPAND = 200;   // ms, "Навіщо це" open/close
 
 /**
  * @param {HTMLElement} root
@@ -33,7 +36,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     `<button type="button" class="sheet__close" aria-label="${esc(M.close)}"><span aria-hidden="true">×</span></button>` +
     "</div>" +
     '<p class="sheet__idea"></p>' +
-    `<details class="why"><summary class="why__summary">${esc(M.why)}</summary><p class="why__text"></p></details>` +
+    `<details class="why"><summary class="why__summary"><span class="why__label">${esc(M.why)}</span></summary><p class="why__text"></p></details>` +
     `<div class="switch" role="group" aria-label="${esc(M.formatGroup)}">` +
     '<button type="button" class="switch__option" data-mode="full" aria-pressed="true"></button>' +
     '<button type="button" class="switch__option" data-mode="small" aria-pressed="false"></button>' +
@@ -101,14 +104,48 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     timer.set(mode === "full" ? p.minutes : p.smallMinutes);
   }
 
-  function close() {
-    if (!dialog.open) return;
-    timer.stop();
-    releaseTrap();
+  let closing = 0;
+
+  /** The dialog is really closed and onClose runs after the 150 ms fade-out. */
+  function finishClose() {
+    clearTimeout(closing);
+    closing = 0;
+    dialog.classList.remove("is-closing");
     dialog.close();
     document.documentElement.classList.remove("has-modal");
     onClose({ day, completed: completedNow });
   }
+
+  function close() {
+    if (!dialog.open || closing) return;
+    timer.stop();
+    releaseTrap();
+    if (prefersReducedMotion()) {
+      finishClose();
+      return;
+    }
+    dialog.classList.add("is-closing");
+    closing = window.setTimeout(finishClose, FADE_OUT);
+  }
+
+  /** "Навіщо це": the text expands and collapses over 200 ms instead of jumping. */
+  el.why.querySelector("summary")?.addEventListener("click", (e) => {
+    if (prefersReducedMotion() || !el.whyText.animate) return; // native toggle
+    e.preventDefault();
+    const text = el.whyText;
+    const opening = !el.why.open;
+    if (opening) el.why.open = true;
+    const full = { height: `${text.scrollHeight}px`, marginTop: getComputedStyle(text).marginTop, opacity: 1 };
+    const shut = { height: "0px", marginTop: "0px", opacity: 0 };
+    text.style.overflow = "hidden";
+    el.why.classList.toggle("is-collapsing", !opening); // arrow turns back right away
+    const anim = text.animate(opening ? [shut, full] : [full, shut], { duration: EXPAND, easing: "ease" });
+    anim.onfinish = anim.oncancel = () => {
+      text.style.overflow = "";
+      if (!opening) el.why.open = false;
+      el.why.classList.remove("is-collapsing");
+    };
+  });
 
   options.forEach((b) => b.addEventListener("click", () => setMode(/** @type {"full" | "small"} */ (b.dataset.mode))));
   el.close.addEventListener("click", close);
@@ -146,6 +183,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
   return {
     /** @param {number} d */
     open(d) {
+      if (closing) finishClose();
       day = d;
       completedNow = false;
       const p = PRACTICES[d - 1];
@@ -160,6 +198,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       el.smallText.textContent = p.small;
       el.whyText.textContent = p.why;
       el.why.open = false;
+      el.why.classList.remove("is-collapsing");
 
       const lit = isDone(d);
       el.done.hidden = !lit;
