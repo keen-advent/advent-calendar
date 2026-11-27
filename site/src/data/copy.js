@@ -36,7 +36,6 @@ export const COPY = {
   modal: {
     close: "Закрити", // close icon label and the secondary button on an already lit day
     meta: (d) => `${d} грудня`,
-    metaDoor: (d) => `${d} грудня · двері нашого дому`,
     formatGroup: "Формат",
     formatFull: (m) => `Вправа · ${m} хв`,
     formatSmall: (m) => `Маленька дія · ${m} хв`,
@@ -67,7 +66,6 @@ export const COPY = {
     copy: "Скопіювати картку",
     copied: "Картку скопійовано",
     copyFailed: "Не вдалося скопіювати",
-    fieldLabel: (row, column) => `${row}: ${column}`,
   },
 
   methods: {

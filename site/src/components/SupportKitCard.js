@@ -1,6 +1,6 @@
-// Day-25 "Мій набір опори" card (prototype state, restyled with Figma tokens).
-// Every field saves on input to this browser only; "Скопіювати картку" puts a
-// plain-text version on the clipboard.
+// Day-25 "Мій набір опори" card (Figma 50:219; input states 56:122).
+// Every field saves on input to this browser only (same storage key and field keys as
+// before); "Скопіювати картку" puts a plain-text version on the clipboard.
 import { KIT_ROWS, KIT_EXTRA } from "../data/supportKit.js";
 import { COPY } from "../data/copy.js";
 import { esc } from "../lib/dom.js";
@@ -34,32 +34,41 @@ async function copyText(text) {
  * }} deps
  */
 export function createSupportKitCard(slot, { getCard, onChange, notify }) {
-  const [hWhen, hTool, hQuick, hFallback] = K.headers;
-  const input = (key, label) =>
-    `<input class="kit__input" type="text" id="kit-${key}" data-key="${key}" aria-label="${esc(label)}" autocomplete="off">`;
+  const [, hTool, hQuick, hFallback] = K.headers;
+
+  /** One labeled field; its label is a real <label>, helper text is tied by aria-describedby. */
+  const field = (key, label, helper) => {
+    const id = `kit-${key}`;
+    const helpId = helper ? `${id}-help` : "";
+    return (
+      '<div class="kit__field">' +
+      `<label class="kit__field-label" for="${id}">${esc(label)}</label>` +
+      `<input class="kit__input" type="text" id="${id}" data-key="${key}" autocomplete="off"${helpId ? ` aria-describedby="${helpId}"` : ""}>` +
+      (helper ? `<p class="kit__helper" id="${helpId}">${esc(helper)}</p>` : "") +
+      "</div>"
+    );
+  };
 
   slot.innerHTML =
     '<div class="kit">' +
-    // Explicit roles: the table is restyled with CSS grid, which can drop native table
-    // semantics in some browsers.
-    `<table class="data-table kit__table" role="table" aria-label="${esc(K.title)}">` +
-    `<thead role="rowgroup"><tr role="row">${K.headers.map((h) => `<th scope="col" role="columnheader">${esc(h)}</th>`).join("")}</tr></thead>` +
-    '<tbody role="rowgroup">' +
+    // One block per situation (Figma 50:226 …): title, then three labeled fields in a row.
     KIT_ROWS.map(
       (r, i) =>
-        '<tr role="row">' +
-        `<th scope="row" role="rowheader">${esc(r.when)}</th>` +
-        `<td role="cell" data-label="${esc(hTool)}">${input(kitKey.tool(i), K.fieldLabel(r.when, hTool))}</td>` +
-        `<td role="cell" data-label="${esc(hQuick)}">${input(kitKey.quick(i), K.fieldLabel(r.when, hQuick))}</td>` +
-        `<td role="cell" data-label="${esc(hFallback)}"><span class="kit__fallback">${esc(r.fallback)}</span>${input(kitKey.fallback(i), K.fieldLabel(r.when, hFallback))}</td>` +
-        "</tr>",
+        `<div class="kit__row" role="group" aria-labelledby="kit-row-${i}">` +
+        `<p class="kit__row-title" id="kit-row-${i}">${esc(r.when)}</p>` +
+        '<div class="kit__fields">' +
+        field(kitKey.tool(i), hTool) +
+        field(kitKey.quick(i), hQuick) +
+        field(kitKey.fallback(i), hFallback, r.fallback) +
+        "</div></div>",
     ).join("") +
-    "</tbody></table>" +
     '<div class="kit__extra">' +
     KIT_EXTRA.map(
       (t, i) =>
+        '<div class="kit__extra-field">' +
         `<label class="kit__label" for="kit-${kitKey.extra(i)}">${esc(t)}</label>` +
-        `<input class="kit__input" type="text" id="kit-${kitKey.extra(i)}" data-key="${kitKey.extra(i)}" autocomplete="off">`,
+        `<input class="kit__input" type="text" id="kit-${kitKey.extra(i)}" data-key="${kitKey.extra(i)}" autocomplete="off">` +
+        "</div>",
     ).join("") +
     "</div>" +
     `<p class="kit__note">${esc(K.note)}</p>` +

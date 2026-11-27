@@ -40,7 +40,6 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     "</div>" +
     '<div class="sheet__full">' +
     '<ol class="steps"></ol>' +
-    '<div class="sheet__kit" hidden></div>' +
     // Same portrait on every day: it belongs to the Example block layout, not to the day's data.
     '<div class="example">' +
     `<img class="example__photo" src="assets/img/mho-portrait.webp" alt="${esc(M.mhoPortraitAlt)}" width="80" height="80" decoding="async">` +
@@ -52,6 +51,8 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     '<div class="sheet__timer"></div>' +
     `<p class="sheet__tip">${esc(M.tip)}</p>` +
     "</div>" +
+    // Day-25 support kit card (Figma 50:219): after the timer, full exercise only (setMode()).
+    '<div class="sheet__kit" hidden></div>' +
     // Full exercise only; shown and hidden together with .sheet__full in setMode().
     `<div class="reflection"><p class="block-label">${esc(M.reflection)}</p><p class="reflection__text"></p></div>` +
     '<p class="done-message" role="status" hidden></p>' +
@@ -90,6 +91,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     const p = PRACTICES[day - 1];
     options.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
     el.full.hidden = mode !== "full";
+    el.kit.hidden = day !== DAYS || mode !== "full";
     el.reflectionBlock.hidden = mode !== "full";
     el.small.hidden = mode !== "small";
     timer.set(mode === "full" ? p.minutes : p.smallMinutes);
@@ -135,7 +137,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       day = d;
       completedNow = false;
       const p = PRACTICES[d - 1];
-      el.meta.textContent = d === DAYS ? M.metaDoor(d) : M.meta(d);
+      el.meta.textContent = M.meta(d);
       el.title.textContent = p.title;
       el.idea.textContent = p.idea;
       options[0].textContent = M.formatFull(p.minutes);
@@ -146,7 +148,6 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       el.small.textContent = p.small;
       el.whyText.textContent = p.why;
       el.why.open = false;
-      el.kit.hidden = d !== DAYS;
 
       const lit = isDone(d);
       el.done.hidden = !lit;

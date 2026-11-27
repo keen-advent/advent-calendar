@@ -70,6 +70,17 @@
   --btn-focus-gap: var(--bg-page);       /* 2px cream gap … */
   --btn-focus-ring: var(--text-strong);  /* … then a 2px navy ring */
 
+  /* Text field (Figma "Input / Text field" 56:122). Focus uses navy, as the component
+     description and the rest of the app's focus rings do. */
+  --input-bg: var(--surface-white);
+  --input-border: var(--line-button);
+  --input-border-hover: var(--locked-line);
+  --input-border-focus: var(--text-strong);
+  --input-bg-disabled: var(--surface);
+  --input-border-disabled: var(--line);
+  --input-text-disabled: var(--locked-ink);
+  --radius-input: 8px;
+
   /* Type */
   --font-sans: "Manrope", system-ui, sans-serif;
   --font-display: "Montserrat", "Manrope", system-ui, sans-serif; /* modal title only, 800 italic */

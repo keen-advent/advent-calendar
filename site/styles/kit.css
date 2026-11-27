@@ -1,105 +1,82 @@
-/* Day-25 support kit card. Prototype content, Figma tokens.
-   The 568px modal is too narrow for a 4-column table with inputs, so each row is laid
-   out as the situation on top and its three labelled fields side by side; below 420px
-   (container width, i.e. phones) the fields stack. The markup stays a real table so
-   screen readers keep the row/column relationships. */
-
-.sheet__kit {
-  container-type: inline-size;
-}
+/* Day-25 support kit card (Figma 50:219) and its text fields (Figma 56:122).
+   Card: 16px padding, 12px gap. Each situation is a block below a 1px divider (16px
+   padding above its title, 12px gap inside) with three labeled fields in a row; the
+   "if not helping" hint is helper text under the third field. Extra fields follow
+   below one more divider, 8px between label and field. */
 
 .kit {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
 }
 
-.kit__table,
-.kit__table tbody {
-  display: block;
-}
-
-.kit__table thead {
-  display: none;
-}
-
-.kit__table tr {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px 10px;
-  padding-block: 12px;
-  border-bottom: 1px solid var(--line);
-}
-
-.kit__table tr:first-child {
+/* One situation. */
+.kit__row,
+.kit__extra {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
 }
 
-.kit__table th,
-.kit__table td {
-  padding: 0;
-  border: 0;
+/* Figma opens the card with a "Моя картка" heading above the first divider. That text is
+   not part of the site's copy, so the first block starts the card without a divider. */
+.kit__row:first-child {
+  padding-top: 0;
+  border-top: 0;
 }
 
-.kit__table th[scope="row"] {
-  grid-column: 1 / -1;
-  font-size: 15px;
+.kit__row-title {
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
   color: var(--text-strong);
 }
 
-.kit__table td {
+.kit__fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+/* Label 12px above the field (Figma: header row, 12px, then the fields row). */
+.kit__field {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 4px;
 }
 
-.kit__table td::before {
-  content: attr(data-label);
+.kit__field-label {
+  margin-bottom: 12px;
   font-size: 12px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: normal;
   color: var(--text-muted);
 }
 
-.kit__fallback {
-  font-size: 13px;
-  line-height: 1.35;
+.kit__helper {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.4;
   color: var(--text-muted);
 }
 
-.kit__input {
-  width: 100%;
-  min-height: 44px;
-  padding: 8px 10px;
-  border: 1.5px solid var(--line-button);
-  border-radius: 8px;
-  background: var(--surface-white);
-  color: var(--text-strong);
-  font: 16px / 1.3 var(--font-sans); /* 16px keeps iOS from zooming in on focus */
-}
-
-.kit__input:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 1px;
-  border-color: var(--text-strong);
-}
-
-.kit__extra {
-  display: grid;
+/* Extra fields: label, 8px, field; 12px between fields. */
+.kit__extra-field {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .kit__label {
   font-size: 14px;
   font-weight: 700;
-  line-height: 1.4;
-}
-
-.kit__label:not(:first-child) {
-  margin-top: 6px;
+  line-height: normal;
+  color: var(--text-strong);
 }
 
 .kit__note {
@@ -112,9 +89,74 @@
   width: fit-content;
 }
 
-@container (max-width: 420px) {
-  .kit__table tr {
+/* Text field states: Default · Hover · Focus · Filled · Disabled. */
+.kit__input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius-input);
+  background: var(--input-bg);
+  color: var(--text-strong);
+  font: 14px / 1.4 var(--font-sans);
+  caret-color: var(--text-strong);
+  transition: border-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .kit__input:hover:not(:disabled):not(:focus) {
+    border-color: var(--input-border-hover);
+  }
+}
+
+/* Focus: 2px navy border; padding trimmed by 0.5px so the text does not shift.
+   The transparent outline becomes visible in forced-colors mode. */
+.kit__input:focus,
+.kit__input:focus-visible {
+  border-width: 2px;
+  border-color: var(--input-border-focus);
+  padding: 0 11.5px;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+.kit__input:disabled {
+  border-color: var(--input-border-disabled);
+  background: var(--input-bg-disabled);
+  color: var(--input-text-disabled);
+  cursor: default;
+}
+
+.kit__input:disabled + .kit__helper {
+  color: var(--input-text-disabled);
+}
+
+/* Touch screens: 16px text so iOS does not zoom into the field on focus. */
+@media (hover: none) and (pointer: coarse) {
+  .kit__input {
+    font-size: 16px;
+  }
+}
+
+/* Narrow screens (site breakpoint): the three fields stack, each with its label above. */
+@media (max-width: 600px) {
+  .kit__fields {
     grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
+  }
+
+  .kit__field-label {
+    margin-bottom: 8px;
+  }
+}
+
+@media (forced-colors: active) {
+  .kit__input:focus {
+    outline-color: Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kit__input {
+    transition: none;
   }
 }
