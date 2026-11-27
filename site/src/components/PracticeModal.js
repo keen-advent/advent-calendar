@@ -119,6 +119,12 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     if (e.target === dialog) close();
   });
 
+  /** Shared button variant (button.css): "primary" (gold) or "secondary". */
+  const setVariant = (button, variant) => {
+    button.classList.toggle("btn--primary", variant === "primary");
+    button.classList.toggle("btn--secondary", variant === "secondary");
+  };
+
   el.complete.addEventListener("click", () => {
     completedNow = true;
     onComplete(day);
@@ -128,6 +134,8 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     el.done.hidden = false;
     el.complete.hidden = true;
     el.later.textContent = M.seeHouse;
+    // The day was just lit: "Подивитися на дім" becomes the primary action.
+    setVariant(el.later, "primary");
     el.later.focus();
   });
 
@@ -154,6 +162,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       el.done.textContent = lit ? M.alreadyLit : "";
       el.complete.hidden = lit;
       el.later.textContent = lit ? M.close : M.later;
+      setVariant(el.later, "secondary"); // "Повернуся пізніше" / "Закрити" stay secondary
 
       setMode("full");
       document.documentElement.classList.add("has-modal");
