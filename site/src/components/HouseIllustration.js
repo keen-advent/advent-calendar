@@ -1,5 +1,6 @@
 // The building illustration: dark base image, lit-window crops of the glow image,
-// SVG overlays for the other lights, a snow canvas and the snowdrift.
+// SVG overlays for the other lights, a snow canvas and the snowdrift. The load-time
+// paint-in adds a temporary cover canvas over the stage (PaintIn.js).
 // Geometry (crop boxes, overlay coordinates, drift path) is reused from the prototype
 // unchanged; see lights.js and houseOverlays.js.
 import { LIGHT_SEQUENCE, WINDOW_BOXES } from "../data/lights.js";
@@ -40,7 +41,6 @@ export function createHouseIllustration(slot) {
   slot.innerHTML =
     '<div class="house-figure">' +
     '<div class="house-figure__stage">' +
-    `<img class="house-figure__sketch" src="${IMG_DARK}" alt="" aria-hidden="true">` +
     '<div class="house">' +
     `<img class="house__base" src="${IMG_DARK}" alt="${COPY.house.alt(0)}" width="1400" height="1177">` +
     `<div class="house__windows">${Object.entries(WINDOW_BOXES).map(([id, box]) => windowMarkup(id, box)).join("")}</div>` +
@@ -52,7 +52,7 @@ export function createHouseIllustration(slot) {
 
   const figure = /** @type {HTMLElement} */ (slot.querySelector(".house-figure"));
   const house = /** @type {HTMLElement} */ (slot.querySelector(".house"));
-  const sketch = /** @type {HTMLElement} */ (slot.querySelector(".house-figure__sketch"));
+  const stage = /** @type {HTMLElement} */ (slot.querySelector(".house-figure__stage"));
   const base = /** @type {HTMLImageElement} */ (slot.querySelector(".house__base"));
   const lights = LIGHT_SEQUENCE.map((id) => house.querySelector(`#w-${id}`));
   const burst = createSnowBurst(/** @type {HTMLCanvasElement} */ (slot.querySelector(".house__snow")));
@@ -69,9 +69,9 @@ export function createHouseIllustration(slot) {
     /** Snowfall after completing a day. */
     burst,
 
-    /** Watercolor paint-in; waits for the base image so the mask covers a real picture. */
+    /** Watercolor paint-in; waits for the base image, which the sketch is drawn from. */
     paintIn() {
-      const run = () => requestAnimationFrame(() => paintIn({ house, sketch }));
+      const run = () => requestAnimationFrame(() => paintIn({ stage, base }));
       if (base.complete) run();
       else base.addEventListener("load", run, { once: true });
     },
