@@ -2,6 +2,9 @@
    One shared style with two variants:
      .btn--primary   gold; only for the action that lights a day ("Завершити вправу")
      .btn--secondary white with beige border; every other pill button
+   Two sizes (Figma property Size):
+     Large  the default .btn (no extra class): 12px 18px, Bold 15px
+     Small  .btn--small: 10px 16px, Bold 14px / 20px; Secondary only in Figma
    States: hover (pointer devices only), pressed (:active), focus (:focus-visible),
    disabled (:disabled or aria-disabled). No movement, scaling or elevation. */
 
@@ -12,6 +15,13 @@
   font: 700 15px / normal var(--font-sans);
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn--small {
+  min-height: 0; /* Figma Small is 43px tall */
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .btn--primary {

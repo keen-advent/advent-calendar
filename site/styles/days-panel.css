@@ -151,9 +151,30 @@
   cursor: pointer;
 }
 
-.text-link:hover,
-.reset-link.is-confirming {
+.text-link:hover {
   color: var(--text-strong);
+}
+
+/* Reset confirmation (Figma 81:878): question, 20px, two small buttons 10px apart.
+   On narrow screens the question wraps above; the buttons stay side by side. */
+.reset-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin-block: -12px; /* same footprint as the link's 44px target, so the panel does not jump */
+}
+
+.reset-confirm__question {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  color: var(--text-muted);
+}
+
+.reset-confirm__actions {
+  display: flex;
+  gap: 10px;
 }
 
 @media (max-width: 600px) {
