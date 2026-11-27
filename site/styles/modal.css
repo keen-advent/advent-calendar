@@ -493,6 +493,12 @@ html.has-modal {
 
 /* Narrow screens (site breakpoint): smaller portrait so the text keeps its width. */
 @media (max-width: 600px) {
+  /* Text wraps to many lines here: the portrait (both "Приклад" and "Маленька дія"
+     blocks share .example) sits at the top, level with the label. */
+  .example {
+    align-items: flex-start;
+  }
+
   .example__photo {
     width: 58px;
     height: 58px;
