@@ -6,7 +6,7 @@
 // When files are added or removed, update PRECACHE (tests/serviceWorker.test.js
 // checks it lists every file in site/) and bump VERSION to drop the old cache.
 
-const VERSION = "v17";
+const VERSION = "v18";
 const CACHE = `advent-calendar-${VERSION}`;
 
 const PRECACHE = [
@@ -54,6 +54,7 @@ const PRECACHE = [
   "assets/img/building-glow.webp",
   "assets/img/mho-portrait.webp",
   "assets/img/mho-portrait-small.webp",
+  "assets/img/og-image.jpg",
   "assets/fonts/manrope-cyrillic.woff2",
   "assets/fonts/manrope-latin.woff2",
   "assets/fonts/montserrat-800-italic-cyrillic.woff2",
