@@ -67,18 +67,43 @@ html.has-modal {
 }
 
 .sheet {
+  --sheet-pad: clamp(20px, 5vw, 36px);
+  --modal-gap: clamp(12px, 5vh, 48px); /* .modal top/bottom padding */
   display: flex;
   flex-direction: column;
-  gap: 16px;
   width: 100%;
   max-width: var(--sheet-width);
+  /* Height limit (Figma 98:1009): 840px, never taller than the visible screen. Shorter
+     content keeps its natural height. dvh follows mobile toolbars and the keyboard. */
+  max-height: calc(100vh - 2 * var(--modal-gap));
+  max-height: min(var(--sheet-max-height), calc(100dvh - 2 * var(--modal-gap)));
   margin: 0 auto;
-  padding: clamp(20px, 5vw, 36px);
+  overflow: hidden; /* the sheet keeps its radius and gold top; .sheet__scroll scrolls */
   border-top: 6px solid var(--gold-strong);
   border-radius: var(--radius-sheet);
   background: var(--surface);
   box-shadow: var(--shadow-sheet);
   color: var(--text-strong);
+}
+
+/* Scrolling content (Figma 98:1233), header included. Its right edge is inset so the
+   8px scrollbar sits 16px from the sheet edge (Figma 99:1238); the gutter is reserved
+   and the right padding shrinks by inset + gutter, so content keeps its 668px width.
+   On phones (overlay scrollbars) the gutter is 0 and the inset shrinks with the padding. */
+.sheet__scroll {
+  --sheet-inset: calc(var(--sheet-pad) - 20px);  /* 16px desktop → 0 at 20px padding */
+  --sheet-pad-right: max(0px, calc(var(--sheet-pad) - var(--sheet-inset) - var(--sheet-gutter, 0px)));
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  margin-right: var(--sheet-inset);
+  padding: var(--sheet-pad) var(--sheet-pad-right) 16px var(--sheet-pad);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-padding-bottom: 48px; /* focused elements stop above the bar's fade */
 }
 
 /* Header: meta + title, close button on the right. */
@@ -192,6 +217,51 @@ html.has-modal {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Actions bar (Figma 98:1126): a sibling below the scrolling content, so it never
+   scrolls; it overlaps the content's last 32px so content fades out under it. When
+   nothing scrolls the buttons sit exactly where they were: 16px below the last section
+   (.sheet__scroll bottom padding), sheet padding below. */
+.sheet__bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: -32px;
+  padding: 32px var(--sheet-pad) var(--sheet-pad);
+  background: var(--sheet-fade);
+}
+
+/* When content scrolls, the last section can scroll fully clear of the fade. */
+.sheet__scroll.is-scrolling {
+  padding-bottom: 32px;
+}
+
+/* Thin scrollbar (Figma 99:1238): 8px #A8A8A7 pill. The track starts below the rounded
+   top corner and ends above the bar (its 32px fade plus a small gap). */
+.sheet__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sheet__scroll::-webkit-scrollbar-track {
+  margin-block: 18px 40px;
+  background: transparent;
+}
+
+.sheet__scroll::-webkit-scrollbar-thumb {
+  border-radius: 80px;
+  background: var(--scrollbar-thumb);
+}
+
+/* Browsers without ::-webkit-scrollbar (Firefox): standard thin scrollbar. */
+@supports not selector(::-webkit-scrollbar) {
+  .sheet__scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
 }
 
 /* Timer panel with the silent-timer tip directly under it (Figma 25:208). */

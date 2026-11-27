@@ -28,6 +28,8 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
   root.innerHTML =
     '<dialog class="modal" aria-labelledby="modal-title">' +
     '<div class="sheet">' +
+    // Only this wrapper scrolls (Figma 98:1233); the actions bar below stays put.
+    '<div class="sheet__scroll">' +
     '<div class="sheet__header">' +
     '<div class="sheet__heading">' +
     '<p class="sheet__meta" id="modal-meta"></p>' +
@@ -62,16 +64,21 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     '<div class="sheet__kit" hidden></div>' +
     // Full exercise only; shown and hidden together with .sheet__full in setMode().
     `<div class="reflection"><p class="block-label">${esc(M.reflection)}</p><p class="reflection__text"></p></div>` +
+    "</div>" + // .sheet__scroll
+    // Actions bar (Figma 98:1126): outside the scroll area, pinned to the bottom.
+    '<div class="sheet__bar">' +
     '<p class="done-message" role="status" hidden></p>' +
     '<div class="sheet__actions">' +
     '<button type="button" class="btn btn--secondary sheet__later"></button>' +
     `<button type="button" class="btn btn--primary sheet__complete">${esc(M.complete)}</button>` +
+    "</div>" +
     "</div>" +
     '<p class="visually-hidden" aria-live="polite" data-announce></p>' +
     "</div></dialog>";
 
   const dialog = /** @type {HTMLDialogElement} */ (root.querySelector("dialog"));
   const sheet = /** @type {HTMLElement} */ (dialog.querySelector(".sheet"));
+  const scroller = /** @type {HTMLElement} */ (sheet.querySelector(".sheet__scroll"));
   const q = (sel) => /** @type {HTMLElement} */ (sheet.querySelector(sel));
   const el = {
     meta: q(".sheet__meta"), title: q(".sheet__title"), idea: q(".sheet__idea"),
@@ -102,7 +109,36 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     el.reflectionBlock.hidden = mode !== "full";
     el.small.hidden = mode !== "small";
     timer.set(mode === "full" ? p.minutes : p.smallMinutes);
+    scroller.scrollTop = 0;
+    syncOverflow();
   }
+
+  /** Width of a classic scrollbar gutter (0 for overlay scrollbars, e.g. on phones);
+   *  modal.css subtracts it from the right padding so the content keeps its width. */
+  function measureGutter() {
+    const gutter = scroller.offsetWidth - scroller.clientWidth;
+    scroller.style.setProperty("--sheet-gutter", `${Math.max(0, gutter)}px`);
+  }
+
+  // .is-scrolling when content is taller than the scroll area: 16px more space at the
+  // end so the last section scrolls fully clear of the bar's fade. The class itself adds
+  // those 16px, so they are subtracted to judge the natural size.
+  const syncOverflow = () => {
+    const added = scroller.classList.contains("is-scrolling") ? 16 : 0;
+    scroller.classList.toggle("is-scrolling", scroller.scrollHeight - added > scroller.clientHeight + 1);
+  };
+  if ("ResizeObserver" in window) {
+    const watch = new ResizeObserver(syncOverflow);
+    [scroller, ...scroller.children].forEach((child) => watch.observe(child));
+  }
+
+  // Keep a focused field or button above the pinned actions bar while tabbing.
+  scroller.addEventListener("focusin", (e) => {
+    const target = /** @type {HTMLElement} */ (e.target);
+    const bar = /** @type {HTMLElement} */ (q(".sheet__bar"));
+    const hidden = target.getBoundingClientRect().bottom - bar.getBoundingClientRect().top;
+    if (hidden > 0 && scroller.scrollHeight > scroller.clientHeight) scroller.scrollTop += hidden + 12;
+  });
 
   let closing = 0;
 
@@ -211,6 +247,8 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       document.documentElement.classList.add("has-modal");
       dialog.showModal();
       dialog.scrollTop = 0;
+      scroller.scrollTop = 0;
+      measureGutter();
       releaseTrap = trapFocus(dialog);
       el.close.focus();
     },
