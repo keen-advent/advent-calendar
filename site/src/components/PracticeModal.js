@@ -46,7 +46,11 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     `<div class="example__body"><p class="block-label">${esc(M.example)}</p><p class="example__text"></p></div>` +
     "</div>" +
     "</div>" +
-    '<p class="sheet__small" hidden></p>' +
+    // Small action (Figma 73:634): same block as "Приклад", with its own label and portrait.
+    '<div class="example example--small sheet__small" hidden>' +
+    `<img class="example__photo" src="assets/img/mho-portrait-small.webp" alt="${esc(M.mhoPortraitAlt)}" width="72" height="72" decoding="async">` +
+    `<div class="example__body"><p class="block-label">${esc(M.smallLabel)}</p><p class="example__action"></p></div>` +
+    "</div>" +
     '<div class="sheet__timer-group">' +
     '<div class="sheet__timer"></div>' +
     `<p class="sheet__tip">${esc(M.tip)}</p>` +
@@ -68,7 +72,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
   const q = (sel) => /** @type {HTMLElement} */ (sheet.querySelector(sel));
   const el = {
     meta: q(".sheet__meta"), title: q(".sheet__title"), idea: q(".sheet__idea"),
-    full: q(".sheet__full"), small: q(".sheet__small"), steps: q(".steps"), kit: q(".sheet__kit"),
+    full: q(".sheet__full"), small: q(".sheet__small"), smallText: q(".example__action"), steps: q(".steps"), kit: q(".sheet__kit"),
     example: q(".example__text"), reflectionBlock: q(".reflection"), reflection: q(".reflection__text"),
     why: /** @type {HTMLDetailsElement} */ (q(".why")), whyText: q(".why__text"),
     done: q(".done-message"), later: q(".sheet__later"), complete: q(".sheet__complete"),
@@ -153,7 +157,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
       el.steps.innerHTML = p.steps.map((s) => `<li>${esc(s)}</li>`).join("");
       el.example.textContent = p.example;
       el.reflection.textContent = p.reflection;
-      el.small.textContent = p.small;
+      el.smallText.textContent = p.small;
       el.whyText.textContent = p.why;
       el.why.open = false;
 
