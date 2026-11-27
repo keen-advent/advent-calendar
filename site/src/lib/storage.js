@@ -3,8 +3,8 @@
 // for the current visit; nothing is saved.
 
 export const KEYS = {
-  done: "advent-calendar:v1:done",
-  card: "advent-calendar:v1:card",
+  done: "advent-calendar:v2:done",
+  card: "advent-calendar:v2:card",
 };
 
 /** @returns {Storage | null} */
