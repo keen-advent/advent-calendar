@@ -30,3 +30,15 @@ for (const [name, card] of Object.entries(cards)) {
     assert.equal(buildKitText(card), prototypeText(card));
   });
 }
+
+test("every card field has a placeholder example, and none leak into the copied text", async () => {
+  const { KIT_PLACEHOLDERS, KIT_ROWS, KIT_EXTRA } = await import("../site/src/data/supportKit.js");
+  const { kitKey } = await import("../site/src/lib/kitText.js");
+  const keys = [
+    ...KIT_ROWS.flatMap((_, i) => [kitKey.tool(i), kitKey.quick(i), kitKey.fallback(i)]),
+    ...KIT_EXTRA.map((_, i) => kitKey.extra(i)),
+  ];
+  assert.deepEqual(Object.keys(KIT_PLACEHOLDERS).sort(), [...keys].sort());
+  const text = buildKitText({});
+  for (const p of Object.values(KIT_PLACEHOLDERS)) assert.ok(!text.includes(p), `placeholder copied: ${p}`);
+});

@@ -9,8 +9,29 @@
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  border: 1px solid var(--line);
+  border: 2px solid var(--gold-strong);
   border-radius: var(--radius-tile);
+}
+
+/* Card header (Figma 64:531): title, 4px, subtitle. */
+.kit__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kit__heading {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: normal;
+  color: var(--gold-ink);
+}
+
+.kit__subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--text-muted);
 }
 
 /* One situation. */
@@ -21,13 +42,6 @@
   gap: 12px;
   padding-top: 16px;
   border-top: 1px solid var(--line);
-}
-
-/* Figma opens the card with a "Моя картка" heading above the first divider. That text is
-   not part of the site's copy, so the first block starts the card without a divider. */
-.kit__row:first-child {
-  padding-top: 0;
-  border-top: 0;
 }
 
 .kit__row-title {
@@ -100,7 +114,19 @@
   color: var(--text-strong);
   font: 14px / 1.4 var(--font-sans);
   caret-color: var(--text-strong);
+  text-overflow: ellipsis;
   transition: border-color 0.15s ease;
+}
+
+/* Placeholder examples: pale grey in every state so they never read as typed text;
+   typed text stays navy (Figma 56:122). */
+.kit__input::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
+}
+
+.kit__input:disabled::placeholder {
+  color: var(--input-text-disabled);
 }
 
 @media (hover: hover) {

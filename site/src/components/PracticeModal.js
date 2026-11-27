@@ -51,7 +51,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     '<div class="sheet__timer"></div>' +
     `<p class="sheet__tip">${esc(M.tip)}</p>` +
     "</div>" +
-    // Day-25 support kit card (Figma 50:219): after the timer, full exercise only (setMode()).
+    // Day-25 support kit card (Figma 50:219): after the timer, in both modes.
     '<div class="sheet__kit" hidden></div>' +
     // Full exercise only; shown and hidden together with .sheet__full in setMode().
     `<div class="reflection"><p class="block-label">${esc(M.reflection)}</p><p class="reflection__text"></p></div>` +
@@ -91,7 +91,7 @@ export function createPracticeModal(root, { isDone, onComplete, onClose }) {
     const p = PRACTICES[day - 1];
     options.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
     el.full.hidden = mode !== "full";
-    el.kit.hidden = day !== DAYS || mode !== "full";
+    el.kit.hidden = day !== DAYS; // shown in both modes; switching keeps typed text
     el.reflectionBlock.hidden = mode !== "full";
     el.small.hidden = mode !== "small";
     timer.set(mode === "full" ? p.minutes : p.smallMinutes);

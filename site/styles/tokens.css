@@ -79,6 +79,7 @@
   --input-bg-disabled: var(--surface);
   --input-border-disabled: var(--line);
   --input-text-disabled: var(--locked-ink);
+  --input-placeholder: #bababa;  /* placeholder examples, all states (Figma 56:122) */
   --radius-input: 8px;
 
   /* Type */
